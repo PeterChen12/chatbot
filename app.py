@@ -2,7 +2,7 @@ import os
 from openai import OpenAI
 import csv
 from dotenv import load_dotenv
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, send_file
 
 # 从 .env 文件加载环境变量
 load_dotenv()
@@ -66,6 +66,14 @@ user_info = {}
 @app.route('/')
 def home():
     return render_template('index.html')
+
+
+@app.route('/<path:filename>')
+def send_file_to_client(filename):
+    try:
+        return send_file(filename)
+    except Exception as e:
+        return str(e), 404
 
 @app.route('/chat', methods=['POST'])
 def chat():
